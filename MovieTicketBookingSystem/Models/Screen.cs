@@ -10,7 +10,7 @@ public class Screen
 
     [Required]
     [MaxLength(100)]
-    public string Name { get; set; } = string.Empty; // e.g., "Screen 1 - Dolby Atmos"
+    public string Name { get; set; } = string.Empty;
 
     [Required]
     public int TheatreId { get; set; } // Foreign Key
@@ -18,6 +18,6 @@ public class Screen
     [ForeignKey("TheatreId")]
     public Theatre Theatre { get; set; } = null!;
 
-    // Navigation property for seats (Temporarily commented until Seat module is created)
-    // public ICollection<Seat> Seats { get; set; } = new List<Seat>();
+    // Navigation property for seats (Uncommented now!)
+    public ICollection<Seat> Seats { get; set; } = new List<Seat>();
 }

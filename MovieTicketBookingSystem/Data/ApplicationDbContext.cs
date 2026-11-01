@@ -10,6 +10,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Movie> Movies => Set<Movie>();
     public DbSet<Theatre> Theatres => Set<Theatre>();
     public DbSet<Screen> Screens => Set<Screen>();
+    public DbSet<Seat> Seats => Set<Seat>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -53,6 +54,19 @@ public class ApplicationDbContext : DbContext
             entity.HasOne(s => s.Theatre)
                   .WithMany(t => t.Screens)
                   .HasForeignKey(s => s.TheatreId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // Seat Configuration & Relationship with Screen
+        modelBuilder.Entity<Seat>(entity =>
+        {
+            entity.HasKey(e => e.SeatId);
+            entity.Property(e => e.SeatNumber).IsRequired().HasMaxLength(10);
+            entity.Property(e => e.SeatType).IsRequired().HasMaxLength(50);
+
+            entity.HasOne(s => s.Screen)
+                  .WithMany(sc => sc.Seats)
+                  .HasForeignKey(s => s.ScreenId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
     }
