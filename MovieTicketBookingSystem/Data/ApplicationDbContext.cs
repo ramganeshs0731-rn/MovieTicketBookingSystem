@@ -8,6 +8,7 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public DbSet<Movie> Movies => Set<Movie>();
+    public DbSet<Theatre> Theatres => Set<Theatre>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -21,6 +22,7 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Movie Configuration
         modelBuilder.Entity<Movie>(entity =>
         {
             entity.HasKey(e => e.MovieId);
@@ -30,6 +32,15 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.ReleaseDate).IsRequired();
             entity.Property(e => e.Language).IsRequired().HasMaxLength(50);
             entity.Property(e => e.Genre).IsRequired().HasMaxLength(50);
+        });
+
+        // Theatre Configuration
+        modelBuilder.Entity<Theatre>(entity =>
+        {
+            entity.HasKey(e => e.TheatreId);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(150);
+            entity.Property(e => e.Location).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.City).HasMaxLength(50);
         });
     }
 }

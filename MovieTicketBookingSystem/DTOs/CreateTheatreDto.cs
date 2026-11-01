@@ -1,0 +1,17 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MovieTicketBookingSystem.DTOs.Theatres;
+
+public class CreateTheatreDto
+{
+    [Required]
+    [MaxLength(150)]
+    public string Name { get; set; } = string.Empty;
+
+    [Required]
+    [MaxLength(200)]
+    public string Location { get; set; } = string.Empty;
+
+    [MaxLength(50)]
+    public string City { get; set; } = string.Empty;
+}
