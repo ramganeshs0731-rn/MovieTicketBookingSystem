@@ -1,0 +1,32 @@
+using Microsoft.EntityFrameworkCore;
+using MovieTicketBookingSystem.Data;
+using MovieTicketBookingSystem.Repositories;
+using MovieTicketBookingSystem.Repositories.Interfaces;
+using MovieTicketBookingSystem.Services;
+using MovieTicketBookingSystem.Services.Interfaces;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllers();
+
+// Configure Entity Framework Core with SQL Server
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Register Repositories
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+
+// Register Services
+builder.Services.AddScoped<IMovieService, MovieService>();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
