@@ -9,6 +9,7 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<Movie> Movies => Set<Movie>();
     public DbSet<Theatre> Theatres => Set<Theatre>();
+    public DbSet<Screen> Screens => Set<Screen>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -41,6 +42,18 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Name).IsRequired().HasMaxLength(150);
             entity.Property(e => e.Location).IsRequired().HasMaxLength(200);
             entity.Property(e => e.City).HasMaxLength(50);
+        });
+
+        // Screen Configuration & Relationship with Theatre
+        modelBuilder.Entity<Screen>(entity =>
+        {
+            entity.HasKey(e => e.ScreenId);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+
+            entity.HasOne(s => s.Theatre)
+                  .WithMany(t => t.Screens)
+                  .HasForeignKey(s => s.TheatreId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

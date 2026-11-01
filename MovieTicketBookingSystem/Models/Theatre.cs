@@ -18,6 +18,6 @@ public class Theatre
     [MaxLength(50)]
     public string City { get; set; } = string.Empty;
 
-    // Navigation property for screens (Temporarily commented until Screen model is created)
-    // public ICollection<Screen> Screens { get; set; } = new List<Screen>();
+    // Navigation property for screens (Uncommented now!)
+    public ICollection<Screen> Screens { get; set; } = new List<Screen>();
 }
