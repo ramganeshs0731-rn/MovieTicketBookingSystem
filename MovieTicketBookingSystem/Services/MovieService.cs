@@ -56,7 +56,8 @@ public class MovieService : IMovieService
         movie.Title = request.Title;
         movie.Description = request.Description;
         movie.DurationMinutes = request.DurationMinutes;
-        movie.ReleaseDate = request.ReleaseDate;
+        DateOnly releaseDate = request.ReleaseDate;
+        movie.ReleaseDate = releaseDate;
         movie.Language = request.Language;
         movie.Genre = request.Genre;
 
