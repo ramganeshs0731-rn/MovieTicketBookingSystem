@@ -27,7 +27,6 @@ public class Show
     [Column(TypeName = "decimal(18,2)")]
     public decimal TicketPrice { get; set; } // e.g., 150.00
 
-    // Navigation properties (Temporarily commented until Booking & Ticketing module is created)
-    // public ICollection<ShowSeat> ShowSeats { get; set; } = new List<ShowSeat>();
-    // public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+    public ICollection<ShowSeat> ShowSeats { get; set; } = new List<ShowSeat>();
+    public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 }

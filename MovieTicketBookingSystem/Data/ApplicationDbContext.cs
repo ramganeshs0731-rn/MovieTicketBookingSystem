@@ -12,6 +12,9 @@ public class ApplicationDbContext : DbContext
     public DbSet<Screen> Screens => Set<Screen>();
     public DbSet<Seat> Seats => Set<Seat>();
     public DbSet<Show> Shows => Set<Show>();
+    public DbSet<ShowSeat> ShowSeats => Set<ShowSeat>();
+    public DbSet<Booking> Bookings => Set<Booking>();
+    public DbSet<BookingSeat> BookingSeats => Set<BookingSeat>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -87,6 +90,51 @@ public class ApplicationDbContext : DbContext
                   .WithMany()
                   .HasForeignKey(s => s.ScreenId)
                   .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ShowSeat Configuration
+        modelBuilder.Entity<ShowSeat>(entity =>
+        {
+            entity.HasKey(e => e.ShowSeatId);
+            entity.HasOne(ss => ss.Show)
+                  .WithMany(s => s.ShowSeats)
+                  .HasForeignKey(ss => ss.ShowId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(ss => ss.Seat)
+                  .WithMany()
+                  .HasForeignKey(ss => ss.SeatId)
+                  .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // Booking Configuration
+        modelBuilder.Entity<Booking>(entity =>
+        {
+            entity.HasKey(e => e.BookingId);
+            entity.Property(e => e.CustomerName).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.CustomerEmail).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.TotalAmount).IsRequired().HasColumnType("decimal(18,2)");
+            entity.Property(e => e.Status).IsRequired().HasMaxLength(50);
+
+            entity.HasOne(b => b.Show)
+                  .WithMany(s => s.Bookings)
+                  .HasForeignKey(b => b.ShowId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // BookingSeat Configuration
+        modelBuilder.Entity<BookingSeat>(entity =>
+        {
+            entity.HasKey(e => e.BookingSeatId);
+            entity.HasOne(bs => bs.Booking)
+                  .WithMany(b => b.BookingSeats)
+                  .HasForeignKey(bs => bs.BookingId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(bs => bs.Seat)
+                  .WithMany()
+                  .HasForeignKey(bs => bs.SeatId)
+                  .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }
