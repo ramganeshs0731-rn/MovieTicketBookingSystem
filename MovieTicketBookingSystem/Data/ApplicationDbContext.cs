@@ -15,6 +15,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<ShowSeat> ShowSeats => Set<ShowSeat>();
     public DbSet<Booking> Bookings => Set<Booking>();
     public DbSet<BookingSeat> BookingSeats => Set<BookingSeat>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -135,6 +136,17 @@ public class ApplicationDbContext : DbContext
                   .WithMany()
                   .HasForeignKey(bs => bs.SeatId)
                   .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // User Configuration
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.UserId);
+            entity.Property(e => e.Username).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
+            entity.HasIndex(e => e.Email).IsUnique();
+            entity.Property(e => e.PasswordHash).IsRequired();
+            entity.Property(e => e.Role).IsRequired().HasMaxLength(50);
         });
     }
 }

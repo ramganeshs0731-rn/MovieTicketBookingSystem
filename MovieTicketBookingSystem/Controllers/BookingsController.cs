@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieTicketBookingSystem.DTOs.Bookings;
 using MovieTicketBookingSystem.Services.Interfaces;
 
@@ -6,6 +7,7 @@ namespace MovieTicketBookingSystem.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize] // Requires a valid JWT token for all endpoints in this controller
 public class BookingsController : ControllerBase
 {
     private readonly IBookingService _bookingService;
