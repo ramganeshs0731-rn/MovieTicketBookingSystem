@@ -1,0 +1,8 @@
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { ApiService } from '../../core/services/api.service';
+import { AuthService } from '../../core/services/auth.service';
+@Component({ standalone: true, imports: [CommonModule, FormsModule, RouterLink], template: `<section class="auth-layout"><div class="auth-aside"><div class="eyebrow">WELCOME BACK</div><h1>Your next<br><em>great night</em><br>starts here.</h1><p>Pick up where you left off. The big screen is waiting.</p></div><form class="auth-card" (ngSubmit)="submit()"><div class="eyebrow">YOUR ACCOUNT</div><h2>Sign in</h2><p class="muted">Enter your details to continue.</p><label>Email address<input type="email" name="email" [(ngModel)]="email" required email placeholder="you@example.com"></label><label>Password<input type="password" name="password" [(ngModel)]="password" required placeholder="Your password"></label><div class="alert error" *ngIf="error">{{error}}</div><button class="primary-btn full" [disabled]="busy">{{busy ? 'Signing in...' : 'Sign in →'}}</button><p class="auth-switch">New to CineBook? <a routerLink="/register">Create an account</a></p></form></section>` })
+export class LoginComponent { private api=inject(ApiService); private auth=inject(AuthService); private router=inject(Router); email=''; password=''; busy=false; error=''; submit():void { this.busy=true; this.error=''; this.api.login({email:this.email,password:this.password}).subscribe({next:r=>{this.auth.login(r.token);this.router.navigate(['/']);},error:e=>{this.error=e?.error?.message||'Unable to sign in. Check your email and password.';this.busy=false;}}); } }
